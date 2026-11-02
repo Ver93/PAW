@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
+      # 1. Checkout repository
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Build Frontend
+      # 2. Build frontend
       - name: Build Frontend
         working-directory: pcapng-analyzer-frontend
         run: |
@@ -29,7 +29,7 @@ jobs:
 
           echo "=== Frontend build complete ==="
 
-      # 3. Upload Project
+      # 3. Upload project to Ubuntu
       - name: Upload Project
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -39,7 +39,7 @@ jobs:
           source: "."
           target: "/var/www/paw"
 
-      # 4. Compile Ubuntu Engine
+      # 4. Compile C engine for Ubuntu
       - name: Compile Ubuntu Engine
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -49,25 +49,30 @@ jobs:
           command_timeout: 30m
           script: |
             set -Eeuo pipefail
-            trap 'echo "BUILD FAILED at line $LINENO"; exit 1' ERR
+
+            trap 'echo "ERROR: Build failed at line $LINENO"' ERR
 
             ENGINE_DIR="/var/www/paw/pcapng-analyzer-engine"
             BACKEND_DIR="/var/www/paw/pcapng-analyzer-backend"
             OUTPUT="$BACKEND_DIR/cli/main.exe"
 
-            echo "=================================="
-            echo "PAW UBUNTU ENGINE BUILD"
-            echo "=================================="
+            echo "======================================"
+            echo "PAW UBUNTU ENGINE COMPILATION"
+            echo "======================================"
 
-            echo "=== STEP 1: Installing dependencies ==="
+            # Install compiler dependencies
+            echo "=== Installing dependencies ==="
+
+            export DEBIAN_FRONTEND=noninteractive
 
             sudo apt-get update
             sudo apt-get install -y build-essential libpcap-dev
 
-            echo "=== STEP 2: Checking directories ==="
+            # Check engine directory
+            echo "=== Checking engine directory ==="
 
             if [ ! -d "$ENGINE_DIR/src" ]; then
-              echo "ERROR: Engine source directory not found: $ENGINE_DIR/src"
+              echo "ERROR: Engine source directory not found"
               exit 1
             fi
 
@@ -75,50 +80,64 @@ jobs:
 
             cd "$ENGINE_DIR"
 
-            echo "=== STEP 3: Finding C source files ==="
+            # Find all C source files
+            echo "=== Finding C source files ==="
 
             mapfile -t SOURCE_FILES < <(
               find src -type f -name "*.c" | sort
             )
 
             if [ "${#SOURCE_FILES[@]}" -eq 0 ]; then
-              echo "ERROR: No C source files found!"
+              echo "ERROR: No C source files found"
               exit 1
             fi
 
-            echo "Found ${#SOURCE_FILES[@]} C source files:"
+            echo "Found ${#SOURCE_FILES[@]} C files"
 
-            printf '%s\n' "${SOURCE_FILES[@]}"
+            # Find all header directories
+            echo "=== Finding header directories ==="
 
-            echo "=== STEP 4: Compiling engine ==="
+            INCLUDE_FLAGS=()
 
-            gcc -O2 -Wall -Wextra \
+            while IFS= read -r directory; do
+              INCLUDE_FLAGS+=("-I$directory")
+            done < <(find src -type d | sort)
+
+            # Compile engine
+            echo "=== Compiling engine ==="
+
+            gcc \
+              -std=c11 \
+              -O2 \
+              -Wall \
+              -Wextra \
+              "${INCLUDE_FLAGS[@]}" \
               "${SOURCE_FILES[@]}" \
               -o "$OUTPUT" \
               -lpcap
 
-            echo "=== STEP 5: Setting permissions ==="
+            # Verify executable
+            echo "=== Verifying executable ==="
 
             chmod +x "$OUTPUT"
 
-            echo "=== STEP 6: Verifying executable ==="
-
-            test -f "$OUTPUT"
-            test -x "$OUTPUT"
+            if [ ! -x "$OUTPUT" ]; then
+              echo "ERROR: Executable was not created"
+              exit 1
+            fi
 
             file "$OUTPUT"
 
             echo "=== Checking shared libraries ==="
-
             ldd "$OUTPUT"
 
-            echo "=================================="
-            echo "ENGINE BUILD SUCCESSFUL"
-            echo "=================================="
+            echo "======================================"
+            echo "ENGINE COMPILATION SUCCESSFUL"
+            echo "======================================"
 
             ls -lh "$OUTPUT"
 
-      # 5. Install Backend Dependencies
+      # 5. Install backend dependencies
       - name: Install Backend Dependencies
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -135,19 +154,20 @@ jobs:
 
             npm install --production
 
-            echo "=== Checking Ubuntu executable ==="
+            echo "=== Checking engine executable ==="
 
             test -x cli/main.exe
+
             file cli/main.exe
 
             echo "=== Restarting PAW ==="
 
             pm2 restart paw || pm2 start server.js --name paw
 
-            echo "=== Checking PM2 status ==="
+            echo "=== PM2 status ==="
 
             pm2 status paw
 
-            echo "=================================="
+            echo "======================================"
             echo "PAW DEPLOYMENT COMPLETE"
-            echo "=================================="
+            echo "======================================"

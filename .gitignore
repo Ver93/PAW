@@ -33,6 +33,9 @@ logs/
 *.pcap
 *.pcapng
 
+!pcapng-analyzer-backend/samples/
+!pcapng-analyzer-backend/samples/demo.pcapng
+
 # Misc
 .DS_Store
 Thumbs.db

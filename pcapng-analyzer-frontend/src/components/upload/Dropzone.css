@@ -110,6 +110,66 @@
   animation: spin 0.8s linear infinite;
 }
 
+
+.demo-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 220px;
+  margin: 24px 0 18px;
+  color: #536176;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.demo-divider::before,
+.demo-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #263448;
+}
+
+.demo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border: 1px solid #31547f;
+  border-radius: 9px;
+  color: #e8f1ff;
+  background: linear-gradient(135deg, #19385d, #14263e);
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.demo-button:hover {
+  background: linear-gradient(135deg, #24558a, #1b385c);
+  border-color: #65a8ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(65, 145, 255, 0.12);
+}
+
+.demo-button:active {
+  transform: translateY(0);
+}
+
+.demo-play {
+  color: #75b5ff;
+  font-size: 12px;
+}
+
+.demo-hint {
+  margin-top: 12px;
+  color: #536176;
+  font-size: 11px;
+}
+
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

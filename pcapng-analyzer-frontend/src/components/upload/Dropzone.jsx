@@ -8,16 +8,11 @@ import {
 import "./Dropzone.css";
 
 export default function Dropzone({ onDataReady }) {
-  const [dragActive, setDragActive] =
-    useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
+  // Normal PCAP/PCAPNG upload
   const analyzeFile = async (file) => {
     if (!file) return;
 
@@ -26,96 +21,72 @@ export default function Dropzone({ onDataReady }) {
 
     try {
       const form = new FormData();
-
       form.append("file", file);
-        //"http://localhost:8000/upload",
-      const response = await fetch(
-        "/api/paw/upload",
-        {
-          method: "POST",
-          body: form,
-        }
-      );
+
+      const response = await fetch("/api/paw/upload", {
+        method: "POST",
+        body: form,
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Server returned ${response.status}`
-        );
+        throw new Error(`Server returned ${response.status}`);
       }
 
-      const data =
-        await response.json();
-
-        console.log("FLOWS:", data.flows);
-
-      console.log(
-        "=== BACKEND RESPONSE ==="
-      );
-
-      console.log(data);
-
-      console.log(
-        "GRAPH:",
-        data.graph
-      );
-
-      console.log(
-        "PACKETS:",
-        data.packets
-      );
-
-      console.log(
-        "FLOWS:",
-        data.flows
-      );
-
-      console.log(
-        "OVERVIEW:",
-        data.overview
-      );
-
-      console.log(
-        "========================"
-      );
+      const data = await response.json();
 
       onDataReady({
-        graph: data.graph || {
-          nodes: [],
-          edges: [],
-        },
-
+        graph: data.graph || { nodes: [], edges: [] },
         packets: data.packets || [],
-
-        // VIKTIGT: flows skickas vidare
         flows: data.flows || [],
-
         overview: data.overview || null,
-
         filename: file.name,
       });
     } catch (err) {
-      console.error(
-        "Upload/analyze error:",
-        err
-      );
+      console.error("Upload/analyze error:", err);
+      setError("Could not analyze the file. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Load demo capture from backend
+  const analyzeDemo = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/paw/demo");
+
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      onDataReady({
+        graph: data.graph || { nodes: [], edges: [] },
+        packets: data.packets || [],
+        flows: data.flows || [],
+        overview: data.overview || null,
+        filename: data.filename || "demo.pcapng",
+      });
+    } catch (err) {
+      console.error("Demo analysis error:", err);
       setError(
-        "Kunde inte analysera filen. Kontrollera att backend körs på port 8000."
+        "Could not load demo capture. Check that the demo file exists on the server."
       );
     } finally {
       setLoading(false);
     }
   };
 
-  
-
   const handleDrop = (event) => {
     event.preventDefault();
-
     setDragActive(false);
 
-    const file =
-      event.dataTransfer.files?.[0];
+    if (loading) return;
+
+    const file = event.dataTransfer.files?.[0];
 
     if (file) {
       analyzeFile(file);
@@ -123,15 +94,15 @@ export default function Dropzone({ onDataReady }) {
   };
 
   const handleSelect = (event) => {
-    const file =
-      event.target.files?.[0];
+    const file = event.target.files?.[0];
 
     if (file) {
       analyzeFile(file);
     }
+
+    event.target.value = "";
   };
 
-  
   return (
     <div className="upload-page">
       <div className="upload-header">
@@ -140,9 +111,7 @@ export default function Dropzone({ onDataReady }) {
             NETWORK FORENSICS
           </div>
 
-          <h1>
-            PCAPNG Analyzer
-          </h1>
+          <h1>PCAPNG Analyzer</h1>
 
           <p>
             Analyze packet captures,
@@ -160,7 +129,7 @@ export default function Dropzone({ onDataReady }) {
         `}
         onDragOver={(event) => {
           event.preventDefault();
-          setDragActive(true);
+          if (!loading) setDragActive(true);
         }}
         onDragLeave={(event) => {
           event.preventDefault();
@@ -192,7 +161,6 @@ export default function Dropzone({ onDataReady }) {
           <>
             <label className="browse-button">
               <FileIcon />
-
               Browse files
 
               <input
@@ -204,8 +172,24 @@ export default function Dropzone({ onDataReady }) {
             </label>
 
             <span className="file-hint">
-              Supported formats: .pcap,
-              .pcapng
+              Supported formats: .pcap, .pcapng
+            </span>
+
+            <div className="demo-divider">
+              <span>OR</span>
+            </div>
+
+            <button
+              className="demo-button"
+              type="button"
+              onClick={analyzeDemo}
+            >
+              <span className="demo-play">▶</span>
+              Try Demo
+            </button>
+
+            <span className="demo-hint">
+              Explore the analyzer using a sample capture
             </span>
           </>
         )}

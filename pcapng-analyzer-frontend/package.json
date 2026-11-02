@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "/paw",
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@dagrejs/dagre": "^3.1.1",
     "@testing-library/dom": "^10.4.2",
@@ -10,6 +11,7 @@
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^13.5.0",
     "@xyflow/react": "^12.12.0",
+    "http-proxy-middleware": "^4.2.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router-dom": "^7.18.4",
@@ -21,5 +23,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

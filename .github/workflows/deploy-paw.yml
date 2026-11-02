@@ -11,15 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Build Frontend
       - name: Build Frontend
         working-directory: pcapng-analyzer-frontend
         run: |
+          set -Eeuo pipefail
+
+          echo "=== Installing frontend dependencies ==="
           npm ci
+
+          echo "=== Building frontend ==="
           npm run build
 
+          echo "=== Frontend build complete ==="
+
+      # 3. Upload Project
       - name: Upload Project
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -29,53 +39,115 @@ jobs:
           source: "."
           target: "/var/www/paw"
 
+      # 4. Compile Ubuntu Engine
       - name: Compile Ubuntu Engine
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          command_timeout: 30m
           script: |
-            set -e
+            set -Eeuo pipefail
+            trap 'echo "BUILD FAILED at line $LINENO"; exit 1' ERR
 
             ENGINE_DIR="/var/www/paw/pcapng-analyzer-engine"
             BACKEND_DIR="/var/www/paw/pcapng-analyzer-backend"
             OUTPUT="$BACKEND_DIR/cli/main.exe"
 
+            echo "=================================="
+            echo "PAW UBUNTU ENGINE BUILD"
+            echo "=================================="
+
+            echo "=== STEP 1: Installing dependencies ==="
+
             sudo apt-get update
             sudo apt-get install -y build-essential libpcap-dev
+
+            echo "=== STEP 2: Checking directories ==="
+
+            if [ ! -d "$ENGINE_DIR/src" ]; then
+              echo "ERROR: Engine source directory not found: $ENGINE_DIR/src"
+              exit 1
+            fi
 
             mkdir -p "$BACKEND_DIR/cli"
 
             cd "$ENGINE_DIR"
 
-            echo "Compiling Ubuntu engine..."
+            echo "=== STEP 3: Finding C source files ==="
+
+            mapfile -t SOURCE_FILES < <(
+              find src -type f -name "*.c" | sort
+            )
+
+            if [ "${#SOURCE_FILES[@]}" -eq 0 ]; then
+              echo "ERROR: No C source files found!"
+              exit 1
+            fi
+
+            echo "Found ${#SOURCE_FILES[@]} C source files:"
+
+            printf '%s\n' "${SOURCE_FILES[@]}"
+
+            echo "=== STEP 4: Compiling engine ==="
 
             gcc -O2 -Wall -Wextra \
-              $(find src -type f -name "*.c") \
+              "${SOURCE_FILES[@]}" \
               -o "$OUTPUT" \
               -lpcap
 
+            echo "=== STEP 5: Setting permissions ==="
+
             chmod +x "$OUTPUT"
 
+            echo "=== STEP 6: Verifying executable ==="
+
+            test -f "$OUTPUT"
             test -x "$OUTPUT"
+
             file "$OUTPUT"
 
-            echo "Ubuntu engine compiled successfully."
+            echo "=== Checking shared libraries ==="
 
-      - name: Install Backend Dependencies and Restart
+            ldd "$OUTPUT"
+
+            echo "=================================="
+            echo "ENGINE BUILD SUCCESSFUL"
+            echo "=================================="
+
+            ls -lh "$OUTPUT"
+
+      # 5. Install Backend Dependencies
+      - name: Install Backend Dependencies
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          command_timeout: 10m
           script: |
-            set -e
+            set -Eeuo pipefail
 
             cd /var/www/paw/pcapng-analyzer-backend
 
+            echo "=== Installing backend dependencies ==="
+
             npm install --production
+
+            echo "=== Checking Ubuntu executable ==="
+
+            test -x cli/main.exe
+            file cli/main.exe
+
+            echo "=== Restarting PAW ==="
 
             pm2 restart paw || pm2 start server.js --name paw
 
-            echo "PAW deployment complete."
+            echo "=== Checking PM2 status ==="
+
+            pm2 status paw
+
+            echo "=================================="
+            echo "PAW DEPLOYMENT COMPLETE"
+            echo "=================================="

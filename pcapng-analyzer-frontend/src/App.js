@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "@xyflow/react/dist/style.css";
 import "./App.css";
@@ -34,49 +35,59 @@ export default function App() {
 
   const handleReset = () => setAnalysis(null);
 
-  if (analysis === null) {
-    return (
-      <div className="app">
-        <Dropzone onDataReady={handleDataReady} />
-      </div>
-    );
-  }
-
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/paw">
       <Routes>
         <Route
           path="/"
           element={
-            <Graph
-              graph={analysis.graph}
-              packets={analysis.packets}
-              flows={analysis.flows}
-              overview={analysis.overview}
-              filename={analysis.filename}
-              onReset={handleReset}
-            />
+            analysis === null ? (
+              <div className="app">
+                <Dropzone onDataReady={handleDataReady} />
+              </div>
+            ) : (
+              <Graph
+                graph={analysis.graph}
+                packets={analysis.packets}
+                flows={analysis.flows}
+                overview={analysis.overview}
+                filename={analysis.filename}
+                onReset={handleReset}
+              />
+            )
           }
         />
 
         <Route
           path="/flows"
           element={
-            <Flows
-              flows={analysis.flows}
-              filename={analysis.filename}
-            />
+            analysis ? (
+              <Flows
+                flows={analysis.flows}
+                filename={analysis.filename}
+              />
+            ) : (
+              <div className="app">
+                <Dropzone onDataReady={handleDataReady} />
+              </div>
+            )
           }
         />
 
         <Route
           path="/flow/:id"
           element={
-            <FlowInspector
-              flows={analysis.flows}
-              packets={analysis.packets}
-              filename={analysis.filename}
-            />
+            analysis ? (
+              <FlowInspector
+                flows={analysis.flows}
+                packets={analysis.packets}
+                filename={analysis.filename}
+              />
+            ) : (
+              <div className="app">
+                <Dropzone onDataReady={handleDataReady} />
+              </div>
+            )
           }
         />
       </Routes>

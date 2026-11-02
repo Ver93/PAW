@@ -8,7 +8,6 @@ export default function PacketRow({
   onSelect,
 }) {
   const {
-    packet,
     index,
     outgoing,
     source,

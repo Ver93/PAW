@@ -25,58 +25,57 @@ export default function Flows({
   const [sortDirection, setSortDirection] =
     useState("desc");
 
-  const sortFlows = (a, b) => {
-    let aValue;
-    let bValue;
-
-    switch (sortKey) {
-      case "source":
-        aValue = `${a.src || ""}:${a.srcPort ?? ""}`;
-        bValue = `${b.src || ""}:${b.srcPort ?? ""}`;
-        break;
-
-      case "destination":
-        aValue = `${a.dst || ""}:${a.dstPort ?? ""}`;
-        bValue = `${b.dst || ""}:${b.dstPort ?? ""}`;
-        break;
-
-      case "protocol":
-        aValue = a.protocol || "";
-        bValue = b.protocol || "";
-        break;
-
-      case "count":
-      default:
-        aValue = Number(a.count) || 0;
-        bValue = Number(b.count) || 0;
-        break;
-    }
-
-    if (
-      typeof aValue === "number" &&
-      typeof bValue === "number"
-    ) {
-      return sortDirection === "asc"
-        ? aValue - bValue
-        : bValue - aValue;
-    }
-
-    const comparison = String(aValue).localeCompare(
-      String(bValue)
-    );
-
-    return sortDirection === "asc"
-      ? comparison
-      : -comparison;
-  };
 
   const filteredFlows = useMemo(() => {
+    const sortFlows = (a, b) => {
+      let aValue;
+      let bValue;
+
+      switch (sortKey) {
+        case "source":
+          aValue = `${a.src || ""}:${a.srcPort ?? ""}`;
+          bValue = `${b.src || ""}:${b.srcPort ?? ""}`;
+          break;
+
+        case "destination":
+          aValue = `${a.dst || ""}:${a.dstPort ?? ""}`;
+          bValue = `${b.dst || ""}:${b.dstPort ?? ""}`;
+          break;
+
+        case "protocol":
+          aValue = a.protocol || "";
+          bValue = b.protocol || "";
+          break;
+
+        case "count":
+        default:
+          aValue = Number(a.count) || 0;
+          bValue = Number(b.count) || 0;
+          break;
+      }
+
+      if (
+        typeof aValue === "number" &&
+        typeof bValue === "number"
+      ) {
+        return sortDirection === "asc"
+          ? aValue - bValue
+          : bValue - aValue;
+      }
+
+      const comparison = String(aValue).localeCompare(
+        String(bValue)
+      );
+
+      return sortDirection === "asc"
+        ? comparison
+        : -comparison;
+    };
+
     const query = filter.trim().toLowerCase();
 
     if (!query) {
-      return [...flows].sort((a, b) =>
-        sortFlows(a, b)
-      );
+      return [...flows].sort(sortFlows);
     }
 
     const expressions = query
@@ -99,9 +98,7 @@ export default function Flows({
             value !== undefined &&
             value !== null
         )
-        .map((value) =>
-          String(value).toLowerCase()
-        );
+        .map((value) => String(value).toLowerCase());
 
       return expressions.every((expression) =>
         searchableValues.some((value) =>
@@ -110,15 +107,9 @@ export default function Flows({
       );
     });
 
-    return [...result].sort((a, b) =>
-      sortFlows(a, b)
-    );
-  }, [
-    flows,
-    filter,
-    sortKey,
-    sortDirection,
-  ]);
+    return [...result].sort(sortFlows);
+  }, [flows, filter, sortKey, sortDirection]);
+
 
   const handleSort = (key) => {
     if (sortKey === key) {

@@ -52,7 +52,7 @@ export default function GraphCanvas({
       rawNodes,
       flowEdges
     );
-  }, [graph]);
+  }, [graph, selectedNode?.id]);
 
   const [nodes, setNodes, onNodesChange] =
     useNodesState(initialNodes);

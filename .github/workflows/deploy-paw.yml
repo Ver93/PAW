@@ -11,25 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
+      # 1. Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Build frontend
+      # 2. Build Frontend
       - name: Build Frontend
         working-directory: pcapng-analyzer-frontend
         run: |
-          set -Eeuo pipefail
-
-          echo "=== Installing frontend dependencies ==="
+          set -e
           npm ci
-
-          echo "=== Building frontend ==="
           npm run build
 
-          echo "=== Frontend build complete ==="
-
-      # 3. Upload project to Ubuntu
+      # 3. Upload Project
       - name: Upload Project
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -39,7 +33,7 @@ jobs:
           source: "."
           target: "/var/www/paw"
 
-      # 4. Compile C engine for Ubuntu
+      # 4. Compile Ubuntu Engine
       - name: Compile Ubuntu Engine
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -50,94 +44,72 @@ jobs:
           script: |
             set -Eeuo pipefail
 
-            trap 'echo "ERROR: Build failed at line $LINENO"' ERR
-
             ENGINE_DIR="/var/www/paw/pcapng-analyzer-engine"
             BACKEND_DIR="/var/www/paw/pcapng-analyzer-backend"
             OUTPUT="$BACKEND_DIR/cli/main.exe"
 
-            echo "======================================"
-            echo "PAW UBUNTU ENGINE COMPILATION"
-            echo "======================================"
-
-            # Install compiler dependencies
             echo "=== Installing dependencies ==="
 
             export DEBIAN_FRONTEND=noninteractive
-
             sudo apt-get update
             sudo apt-get install -y build-essential libpcap-dev
 
-            # Check engine directory
-            echo "=== Checking engine directory ==="
-
-            if [ ! -d "$ENGINE_DIR/src" ]; then
-              echo "ERROR: Engine source directory not found"
-              exit 1
-            fi
+            echo "=== Preparing output directory ==="
 
             mkdir -p "$BACKEND_DIR/cli"
 
             cd "$ENGINE_DIR"
 
-            # Find all C source files
-            echo "=== Finding C source files ==="
-
-            mapfile -t SOURCE_FILES < <(
-              find src -type f -name "*.c" | sort
-            )
-
-            if [ "${#SOURCE_FILES[@]}" -eq 0 ]; then
-              echo "ERROR: No C source files found"
-              exit 1
-            fi
-
-            echo "Found ${#SOURCE_FILES[@]} C files"
-
-            # Find all header directories
-            echo "=== Finding header directories ==="
-
-            INCLUDE_FLAGS=()
-
-            while IFS= read -r directory; do
-              INCLUDE_FLAGS+=("-I$directory")
-            done < <(find src -type d | sort)
-
-            # Compile engine
-            echo "=== Compiling engine ==="
+            echo "=== Compiling PAW Ubuntu engine ==="
 
             gcc \
-              -std=c11 \
-              -O2 \
-              -Wall \
-              -Wextra \
-              "${INCLUDE_FLAGS[@]}" \
-              "${SOURCE_FILES[@]}" \
+              -Wall -Wextra -Wpedantic \
+              -Isrc \
+              -Isrc/parsing \
+              -Isrc/pcapng \
+              -Isrc/core \
+              -Isrc/utils \
+              -Isrc/validation \
+              -Isrc/export \
+              -Isrc/packets \
+              src/main.c \
+              src/parsing/pcapng_parser.c \
+              src/parsing/packet_parser.c \
+              src/parsing/shb_parser.c \
+              src/parsing/idb_parser.c \
+              src/parsing/epb_parser.c \
+              src/parsing/nrb_parser.c \
+              src/parsing/isb_parser.c \
+              src/parsing/pb_parser.c \
+              src/parsing/spb_parser.c \
+              src/parsing/ethernet_parser.c \
+              src/parsing/ipv4_parser.c \
+              src/parsing/ipv6_parser.c \
+              src/parsing/protocol_parser.c \
+              src/validation/pcapng_validation.c \
+              src/validation/packet_validation.c \
+              src/core/protocol_node.c \
+              src/utils/endianness.c \
+              src/utils/debug.c \
+              src/utils/utils.c \
+              src/export/json_export.c \
               -o "$OUTPUT" \
               -lpcap
 
-            # Verify executable
             echo "=== Verifying executable ==="
 
             chmod +x "$OUTPUT"
 
-            if [ ! -x "$OUTPUT" ]; then
-              echo "ERROR: Executable was not created"
-              exit 1
-            fi
+            test -x "$OUTPUT"
 
             file "$OUTPUT"
-
-            echo "=== Checking shared libraries ==="
             ldd "$OUTPUT"
 
-            echo "======================================"
-            echo "ENGINE COMPILATION SUCCESSFUL"
-            echo "======================================"
+            echo "=== Ubuntu engine compiled successfully ==="
 
             ls -lh "$OUTPUT"
 
-      # 5. Install backend dependencies
+      # 5. Install Backend Dependencies
       - name: Install Backend Dependencies
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -154,20 +126,14 @@ jobs:
 
             npm install --production
 
-            echo "=== Checking engine executable ==="
+            echo "=== Checking engine ==="
 
             test -x cli/main.exe
-
-            file cli/main.exe
 
             echo "=== Restarting PAW ==="
 
             pm2 restart paw || pm2 start server.js --name paw
 
-            echo "=== PM2 status ==="
-
             pm2 status paw
 
-            echo "======================================"
-            echo "PAW DEPLOYMENT COMPLETE"
-            echo "======================================"
+            echo "=== Deployment complete ==="

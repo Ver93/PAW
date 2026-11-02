@@ -19,6 +19,7 @@ src/core/protocol_node.c            ^
 src/utils/endianness.c              ^
 src/utils/debug.c                   ^
 src/utils/utils.c                   ^
+src/export/json_export.c            ^
 -Wall -Wextra -Wpedantic    ^
 -Isrc                       ^
 -Isrc/parsing               ^
@@ -26,5 +27,6 @@ src/utils/utils.c                   ^
 -Isrc/core                  ^
 -Isrc/utils                 ^
 -Isrc/validation            ^
+-Isrc/export                ^
 -Isrc/packets               ^
 -o bin/main.exe

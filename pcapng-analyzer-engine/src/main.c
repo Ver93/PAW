@@ -6,11 +6,10 @@
 #include "pcapng_validation.h"
 #include "packet_parser.h"
 #include "packet_validation.h"
-
 #include "protocol_node.h"
+#include "json_export.h"
 
-int main(int argc, char *argv[]){
-    
+int main(int argc, char *argv[]) {
     if (argc < 2) return 1;
 
     FILE *fp = fopen(argv[1], "rb");
@@ -34,6 +33,12 @@ int main(int argc, char *argv[]){
     }
 
     protocol_chain_t **chains = build_all_chains(&pcapng);
+
+    for (size_t i = 0; i < pcapng.packet_count; i++) {
+        if (chains[i]) {
+            print_protocol_nodes_json(chains[i], i);
+        }
+    }
 
     free_pcapng(&pcapng);
     free_all_chains(chains);

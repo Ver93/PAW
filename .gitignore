@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment
+.env
+.env.*
+
+# Uploads
+pcapng-analyzer-backend/uploads/*
+!pcapng-analyzer-backend/uploads/.gitkeep
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# VS Code
+.vscode/
+
+# C build artifacts
+*.exe
+*.dll
+*.so
+*.o
+*.obj
+*.out
+
+# Captures
+*.pcap
+*.pcapng
+
+# Misc
+.DS_Store
+Thumbs.db

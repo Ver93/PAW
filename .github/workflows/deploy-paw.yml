@@ -1,0 +1,42 @@
+name: Deploy PAW
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Frontend
+        working-directory: pcapng-analyzer-frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload Project
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "/var/www/paw"
+
+      - name: Install Backend Dependencies
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/paw/pcapng-analyzer-backend
+
+            npm install --production
+
+            pm2 restart paw || pm2 start server.js --name paw

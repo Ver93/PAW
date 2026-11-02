@@ -1,3 +1,4 @@
+
 name: Deploy PAW
 
 on:
@@ -28,15 +29,53 @@ jobs:
           source: "."
           target: "/var/www/paw"
 
-      - name: Install Backend Dependencies
+      - name: Compile Ubuntu Engine
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            set -e
+
+            ENGINE_DIR="/var/www/paw/pcapng-analyzer-engine"
+            BACKEND_DIR="/var/www/paw/pcapng-analyzer-backend"
+            OUTPUT="$BACKEND_DIR/cli/main.exe"
+
+            sudo apt-get update
+            sudo apt-get install -y build-essential libpcap-dev
+
+            mkdir -p "$BACKEND_DIR/cli"
+
+            cd "$ENGINE_DIR"
+
+            echo "Compiling Ubuntu engine..."
+
+            gcc -O2 -Wall -Wextra \
+              $(find src -type f -name "*.c") \
+              -o "$OUTPUT" \
+              -lpcap
+
+            chmod +x "$OUTPUT"
+
+            test -x "$OUTPUT"
+            file "$OUTPUT"
+
+            echo "Ubuntu engine compiled successfully."
+
+      - name: Install Backend Dependencies and Restart
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+
             cd /var/www/paw/pcapng-analyzer-backend
 
             npm install --production
 
             pm2 restart paw || pm2 start server.js --name paw
+
+            echo "PAW deployment complete."

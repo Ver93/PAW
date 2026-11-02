@@ -1,0 +1,510 @@
+/* =========================================================
+   PACKET TABLE
+   Virtualized Wireshark-style packet list
+   ========================================================= */
+
+
+/* =========================================================
+   WRAPPER
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   SCROLL VIEWPORT
+   ========================================================= */
+
+.table-scroll {
+  flex: 1 1 auto;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #2d4057
+    #090e15;
+}
+
+
+.table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #090e15;
+}
+
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #2d4057;
+
+  border-radius: 4px;
+}
+
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #405975;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.packet-table {
+  width: 100%;
+
+  min-width: 600px;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+
+  background: #090e15;
+
+  color: #a5b2c2;
+
+  font-size: 10px;
+
+  user-select: none;
+}
+
+
+/* =========================================================
+   COLUMN WIDTHS
+   ========================================================= */
+
+.packet-table th:nth-child(1),
+.packet-table td:nth-child(1) {
+  width: 55px;
+}
+
+
+.packet-table th:nth-child(2),
+.packet-table td:nth-child(2) {
+  width: 25%;
+}
+
+
+.packet-table th:nth-child(3),
+.packet-table td:nth-child(3) {
+  width: 20%;
+}
+
+
+.packet-table th:nth-child(4),
+.packet-table td:nth-child(4) {
+  width: 20%;
+}
+
+
+.packet-table th:nth-child(5),
+.packet-table td:nth-child(5) {
+  width: 20%;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.packet-table thead {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 20;
+}
+
+
+.packet-table th {
+  height: 25px;
+
+  padding: 0 8px;
+
+  box-sizing: border-box;
+
+  background: #0b1119;
+
+  border-right: 1px solid #172435;
+  border-bottom: 1px solid #1c2938;
+
+  color: #65758b;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  line-height: 25px;
+
+  text-align: left;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  white-space: nowrap;
+
+  user-select: none;
+}
+
+
+.packet-table th:last-child {
+  border-right: none;
+}
+
+
+/* =========================================================
+   BODY ROWS
+   ========================================================= */
+
+.packet-table tbody tr {
+  height: 25px;
+
+  transition: none !important;
+
+  animation: none !important;
+}
+
+
+/* =========================================================
+   BODY CELLS
+   ========================================================= */
+
+.packet-table td {
+  position: relative;
+
+  height: 25px;
+
+  padding: 0 8px;
+
+  box-sizing: border-box;
+
+  background: #090e15;
+
+  border-right: 1px solid #111c29;
+  border-bottom: 1px solid #111c29;
+
+  color: #a5b2c2;
+
+  font-size: 10px;
+
+  line-height: 25px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition: none !important;
+
+  animation: none !important;
+}
+
+
+.packet-table td:last-child {
+  border-right: none;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.packet-table tbody td:hover {
+  background: #17283a;
+
+  color: #dce8f5;
+
+  box-shadow:
+    inset 0 0 0 1px #2d4d6a;
+}
+
+
+/* =========================================================
+   SELECTED PACKET
+   ========================================================= */
+
+.packet-table tbody tr.packet-selected td {
+  background: #14263a;
+
+  color: #dce8f5;
+}
+
+
+/* =========================================================
+   SELECTED PACKET + HOVER
+   ========================================================= */
+
+.packet-table tbody tr.packet-selected td:hover {
+  background: #1b3a58;
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 0 0 1px #4b7fae;
+}
+
+
+/* =========================================================
+   SELECTED CELL
+   ========================================================= */
+
+.packet-table tbody td.cell-selected {
+  background: #1d4165 !important;
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 0 0 1px #5b9bd5;
+}
+
+
+/* =========================================================
+   SELECTED CELL + HOVER
+   ========================================================= */
+
+.packet-table tbody td.cell-selected:hover {
+  background: #28547d !important;
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 0 0 1px #72b2eb;
+}
+
+
+/* =========================================================
+   LEFT SELECTION INDICATOR
+   ========================================================= */
+
+.packet-table tbody tr.packet-selected
+td:first-child {
+  box-shadow:
+    inset 3px 0 0 #4b8ac4;
+}
+
+
+/* =========================================================
+   PACKET NUMBER
+   ========================================================= */
+
+.packet-number {
+  color: #6c9bc8;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 9px;
+
+  line-height: 25px;
+}
+
+
+.packet-table tbody tr.packet-selected
+.packet-number {
+  color: #a8d0f2;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   INTERFACE
+   ========================================================= */
+
+.interface-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  height: 16px;
+
+  padding: 0 5px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #22364d;
+
+  border-radius: 3px;
+
+  background: #0d1824;
+
+  color: #7194b8;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 8px;
+
+  line-height: 14px;
+
+  vertical-align: middle;
+}
+
+
+.packet-table td.cell-selected
+.interface-badge {
+  border-color: #5485b2;
+
+  background: #183653;
+
+  color: #b9dcfa;
+}
+
+
+/* =========================================================
+   ENTROPY
+   ========================================================= */
+
+.entropy {
+  color: #7ea6c9;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 9px;
+
+  line-height: 25px;
+}
+
+
+.packet-table td.cell-selected
+.entropy {
+  color: #c0e0fa;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.packet-status {
+  color: #62866f;
+
+  font-size: 8px;
+
+  line-height: 25px;
+}
+
+
+.packet-table td.cell-selected
+.packet-status {
+  color: #9bd1ad;
+}
+
+
+/* =========================================================
+   VIRTUAL SPACERS
+   ========================================================= */
+
+.packet-table tbody tr.virtual-spacer {
+  height: 0;
+
+  pointer-events: none;
+}
+
+
+.packet-table tbody tr.virtual-spacer td {
+  height: 0;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: default;
+
+  pointer-events: none;
+
+  line-height: 0;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.packet-table td:focus,
+.packet-table th:focus {
+  outline: none;
+}
+
+
+/* =========================================================
+   NO ANIMATION / NO TRANSITION
+   ========================================================= */
+
+.packet-table,
+.packet-table *,
+.packet-table tr,
+.packet-table td {
+  transition: none !important;
+
+  animation: none !important;
+}
+
+.packet-table {
+  font-size: 12px;
+}
+
+.packet-table td {
+  font-size: 12px;
+}
+
+.packet-table th {
+  font-size: 10px;
+}
+
+.packet-number {
+  font-size: 11px;
+}
+
+.interface-badge {
+  font-size: 10px;
+}
+
+.entropy {
+  font-size: 11px;
+}
+
+.packet-status {
+  font-size: 10px;
+}

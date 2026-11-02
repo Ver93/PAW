@@ -1,0 +1,349 @@
+
+.packet-dump {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: 12px;
+  box-sizing: border-box;
+
+  border: 1px solid #243448;
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  background: #070b10;
+}
+
+
+.dump-header {
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid #243448;
+
+  background: #0d141d;
+}
+
+.dump-header h3 {
+  margin: 0;
+
+  color: #b5c3d3;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.dump-subtitle {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #60748c;
+
+  font-size: 9px;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+
+.dump-count {
+  color: #7891ad;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 9px;
+}
+
+/* ─────────────────────────────────────────
+   TABLE CONTAINER
+───────────────────────────────────────── */
+
+.dump-table-wrapper {
+  flex: 1 1 auto;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: auto;
+
+  background: #070b10;
+}
+
+/* ─────────────────────────────────────────
+   TABLE
+───────────────────────────────────────── */
+
+.dump-table {
+  width: max-content;
+  min-width: 100%;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  table-layout: fixed;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 11px;
+}
+
+/* ─────────────────────────────────────────
+   HEADER
+───────────────────────────────────────── */
+
+.dump-table thead {
+  position: sticky;
+  top: 0;
+
+  z-index: 2;
+}
+
+.dump-table th {
+  height: 31px;
+
+  padding: 0 6px;
+
+  box-sizing: border-box;
+
+  border-right: 1px solid #243448;
+  border-bottom: 1px solid #2a3b50;
+
+  color: #7890aa;
+
+  background: #101923;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-align: center;
+
+  user-select: none;
+}
+
+.dump-table th:last-child {
+  border-right: 0;
+}
+
+/* Offset */
+
+.dump-table .offset-column {
+  width: 92px;
+
+  padding-left: 12px;
+
+  text-align: left;
+}
+
+/* Hex */
+
+.dump-table .hex-column {
+  width: 34px;
+  min-width: 34px;
+}
+
+/* ASCII */
+
+.dump-table .ascii-column {
+  width: 180px;
+  min-width: 180px;
+
+  padding-left: 12px;
+
+  text-align: left;
+}
+
+/* ─────────────────────────────────────────
+   ROWS
+───────────────────────────────────────── */
+
+.dump-table tbody tr {
+  height: 27px;
+}
+
+.dump-table tbody tr:nth-child(even) {
+  background: #090f16;
+}
+
+.dump-table tbody tr:nth-child(odd) {
+  background: #070b10;
+}
+
+.dump-table tbody tr:hover {
+  background: #101b28;
+}
+
+.dump-table td {
+  height: 27px;
+
+  padding: 0 6px;
+
+  box-sizing: border-box;
+
+  border-right: 1px solid #172536;
+  border-bottom: 1px solid #131e2a;
+
+  white-space: nowrap;
+
+  user-select: text;
+}
+
+.dump-table td:last-child {
+  border-right: 0;
+}
+
+/* ─────────────────────────────────────────
+   OFFSET
+───────────────────────────────────────── */
+
+.dump-table .offset-cell {
+  width: 92px;
+
+  padding-left: 12px;
+
+  color: #7188a1;
+
+  background: rgba(12, 20, 29, 0.75);
+
+  text-align: left;
+}
+
+.dump-table tbody tr:hover .offset-cell {
+  color: #a7bdd4;
+
+  background: #111d2a;
+}
+
+/* ─────────────────────────────────────────
+   HEX BYTES
+───────────────────────────────────────── */
+
+.dump-table .hex-cell {
+  width: 34px;
+
+  color: #a5c7e8;
+
+  text-align: center;
+
+  cursor: default;
+
+  transition:
+    background 80ms ease,
+    color 80ms ease;
+}
+
+.dump-table .hex-cell:hover {
+  color: #ffffff;
+
+  background: #24415f;
+
+  box-shadow:
+    inset 0 0 0 1px #47719a;
+}
+
+.dump-table .hex-cell.empty {
+  color: transparent;
+
+  background: transparent;
+}
+
+/* ─────────────────────────────────────────
+   ASCII
+───────────────────────────────────────── */
+
+.dump-table .ascii-cell {
+  width: 180px;
+
+  padding-left: 13px;
+
+  border-left: 1px solid #2a3b50;
+
+  color: #9bcbb0;
+
+  background: rgba(10, 17, 22, 0.65);
+
+  text-align: left;
+
+  letter-spacing: 0.03em;
+}
+
+.dump-table tbody tr:hover .ascii-cell {
+  background: #0e1919;
+}
+
+.ascii-printable {
+  color: #a7d8b9;
+}
+
+.ascii-nonprintable {
+  color: #607482;
+}
+
+/* ─────────────────────────────────────────
+   BOTTOM INFORMATION
+───────────────────────────────────────── */
+
+.dump-truncated,
+.dump-example {
+  flex: 0 0 30px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 13px;
+
+  box-sizing: border-box;
+
+  border-top: 1px solid #243448;
+
+  color: #708298;
+
+  background: #0d141d;
+
+  font-size: 9px;
+}
+
+/* ─────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────── */
+
+.dump-table-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dump-table-wrapper::-webkit-scrollbar-track {
+  background: #080d13;
+}
+
+.dump-table-wrapper::-webkit-scrollbar-thumb {
+  background: #344b65;
+
+  border-radius: 5px;
+}
+
+.dump-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #496783;
+}

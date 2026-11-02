@@ -1,0 +1,520 @@
+/* ============================================================
+   FLOWS PAGE
+============================================================ */
+
+.flows-page {
+  width: 100%;
+  min-height: calc(100vh - 68px);
+  box-sizing: border-box;
+
+  padding: 20px 32px 28px;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(55, 130, 255, 0.05),
+      transparent 30%
+    ),
+    #080b10;
+
+  color: #f3f6fb;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ============================================================
+   FILTER BAR
+============================================================ */
+
+.flows-filterbar {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 38px;
+
+  margin: 0 0 8px;
+  padding: 0 8px;
+
+  border: 1px solid #202b39;
+
+  background: #0d131b;
+}
+
+.flows-filterbar label {
+  flex: 0 0 auto;
+
+  margin: 0 10px 0 4px;
+
+  color: #7d8da2;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.flows-filterbar input {
+  flex: 1;
+  min-width: 0;
+
+  height: 26px;
+
+  padding: 0 8px;
+
+  border: 1px solid #263445;
+  border-radius: 2px;
+
+  outline: none;
+
+  background: #101721;
+  color: #dce4ee;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 12px;
+}
+
+.flows-filterbar input:focus {
+  border-color: #3e628a;
+  background: #111a25;
+}
+
+.flows-filterbar input::placeholder {
+  color: #586779;
+}
+
+.filter-clear {
+  height: 25px;
+
+  margin-left: 6px;
+  padding: 0 9px;
+
+  border: 1px solid #293746;
+  border-radius: 2px;
+
+  background: #151d27;
+  color: #8796a8;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.filter-clear:hover {
+  background: #1b2632;
+  color: #b2c0d0;
+}
+
+.flows-visible-count {
+  flex: 0 0 auto;
+
+  margin-left: 10px;
+  padding-left: 10px;
+
+  border-left: 1px solid #27313d;
+
+  color: #68788c;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.flows-table-container {
+  width: 100%;
+
+  overflow: auto;
+
+  border: 1px solid #202b39;
+
+  background: #0d131b;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.flows-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   TABLE HEADER
+============================================================ */
+
+.flows-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.flows-table th {
+  height: 30px;
+
+  padding: 0 9px;
+
+  border-right: 1px solid #26313e;
+  border-bottom: 1px solid #303b49;
+
+  background: #151d27;
+  color: #8998aa;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  user-select: none;
+}
+
+.flows-table th:last-child {
+  border-right: none;
+}
+
+.flows-table th.sortable {
+  cursor: pointer;
+}
+
+.flows-table th.sortable:hover {
+  background: #1a2430;
+  color: #b9c6d5;
+}
+
+
+/* ============================================================
+   TABLE BODY
+============================================================ */
+
+.flows-table td {
+  height: 29px;
+
+  padding: 0 9px;
+
+  border-right: 1px solid #1b2632;
+  border-bottom: 1px solid #1b2632;
+
+  background: #0d131b;
+  color: #c7d0db;
+
+  white-space: nowrap;
+}
+
+.flows-table td:last-child {
+  border-right: none;
+}
+
+
+/* ============================================================
+   ROW
+============================================================ */
+
+.flow-row {
+  cursor: pointer;
+}
+
+.flow-row:hover td {
+  background: #111c28;
+}
+
+.flow-row:active td {
+  background: #162334;
+}
+
+
+/* ============================================================
+   ENDPOINTS
+============================================================ */
+
+.endpoint {
+  overflow: hidden;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  text-overflow: ellipsis;
+}
+
+.endpoint span {
+  color: #cbd6e2;
+}
+
+.endpoint small {
+  color: #667689;
+}
+
+
+/* ============================================================
+   PROTOCOL
+============================================================ */
+
+.protocol {
+  color: #9aabbc !important;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   NUMBERS
+============================================================ */
+
+.number {
+  text-align: right !important;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: #657487 !important;
+}
+
+.duration {
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ============================================================
+   COLUMN WIDTHS
+============================================================ */
+
+.column-number {
+  width: 45px;
+
+  color: #647386 !important;
+
+  text-align: right !important;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}
+
+.column-protocol {
+  width: 90px;
+}
+
+.column-number-value {
+  width: 85px;
+
+  text-align: right !important;
+}
+
+.column-duration {
+  width: 95px;
+}
+
+
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.flows-empty {
+  height: 180px !important;
+
+  color: #657487 !important;
+
+  text-align: center !important;
+
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   LIGHT MODE
+============================================================ */
+
+:root[data-theme="light"] .flows-page {
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(55, 130, 255, 0.035),
+      transparent 30%
+    ),
+    #f1f3f5;
+
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flows-filterbar {
+  border-color: #c8cfd5;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flows-filterbar label {
+  color: #68737c;
+}
+
+:root[data-theme="light"] .flows-filterbar input {
+  border-color: #d4d9de;
+
+  background: #f8f9fa;
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flows-filterbar input:focus {
+  border-color: #7fa4c2;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flows-filterbar input::placeholder {
+  color: #9aa2a9;
+}
+
+:root[data-theme="light"] .filter-clear {
+  border-color: #cbd2d8;
+
+  background: #f3f5f6;
+  color: #59646e;
+}
+
+:root[data-theme="light"] .filter-clear:hover {
+  background: #e8ecef;
+}
+
+:root[data-theme="light"] .flows-visible-count {
+  border-left-color: #d8dde1;
+  color: #7a848c;
+}
+
+:root[data-theme="light"] .flows-table-container {
+  border-color: #c8cfd5;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flows-table th {
+  border-right-color: #d7dce0;
+  border-bottom-color: #bfc7cd;
+
+  background: #e7eaed;
+  color: #4e5962;
+}
+
+:root[data-theme="light"] .flows-table th.sortable:hover {
+  background: #dde1e4;
+  color: #26313a;
+}
+
+:root[data-theme="light"] .flows-table td {
+  border-right-color: #e1e5e8;
+  border-bottom-color: #e1e5e8;
+
+  background: #ffffff;
+  color: #303940;
+}
+
+:root[data-theme="light"] .flow-row:hover td {
+  background: #e9f2f8;
+}
+
+:root[data-theme="light"] .flow-row:active td {
+  background: #dceaf3;
+}
+
+:root[data-theme="light"] .endpoint span {
+  color: #26343e;
+}
+
+:root[data-theme="light"] .endpoint small {
+  color: #78838c;
+}
+
+:root[data-theme="light"] .protocol {
+  color: #47545e !important;
+}
+
+:root[data-theme="light"] .muted {
+  color: #8a949c !important;
+}
+
+:root[data-theme="light"] .column-number {
+  color: #89939b !important;
+}
+
+:root[data-theme="light"] .flows-empty {
+  color: #89939b !important;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 800px) {
+  .flows-page {
+    min-height: calc(100vh - 68px);
+
+    padding: 16px 20px 20px;
+  }
+
+  .flows-table {
+    min-width: 850px;
+  }
+
+  .flows-table-container {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .flows-page {
+    padding: 16px 16px 16px;
+  }
+
+  .flows-filterbar label {
+    display: none;
+  }
+
+  .flows-visible-count {
+    display: none;
+  }
+}

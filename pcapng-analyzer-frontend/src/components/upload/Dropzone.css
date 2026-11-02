@@ -1,0 +1,117 @@
+/* ============================================================
+   DROPZONE
+============================================================ */
+
+.dropzone {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px;
+  border: 1px dashed #34445b;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(17, 24, 35, 0.9), rgba(10, 14, 21, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 25px 70px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.dropzone:hover {
+  border-color: #48668f;
+}
+
+.dropzone.active {
+  border-color: #5fa8ff;
+  background:
+    radial-gradient(circle at center, rgba(63, 135, 230, 0.1), transparent 60%),
+    #0c131d;
+  transform: scale(1.01);
+}
+
+.dropzone.loading {
+  cursor: wait;
+}
+
+.dropzone-icon {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  border: 1px solid #263a54;
+  border-radius: 20px;
+  color: #65a8ff;
+  background: #0d1724;
+  box-shadow: 0 0 40px rgba(65, 145, 255, 0.07);
+}
+
+.upload-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.dropzone h2 {
+  margin: 0 0 9px;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.dropzone p {
+  margin: 0 0 26px;
+  color: #6f7d91;
+  font-size: 14px;
+}
+
+.browse-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border: 1px solid #31547f;
+  border-radius: 9px;
+  color: #e8f1ff;
+  background: #13233a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.browse-button:hover {
+  background: #18304f;
+  border-color: #4c7fb9;
+}
+
+.file-hint {
+  margin-top: 13px;
+  color: #4e5c6f;
+  font-size: 11px;
+}
+
+.error-box {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border: 1px solid #5c3036;
+  border-radius: 9px;
+  color: #ff9b9b;
+  background: rgba(130, 38, 50, 0.12);
+  font-size: 13px;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #25364c;
+  border-top-color: #67aaff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

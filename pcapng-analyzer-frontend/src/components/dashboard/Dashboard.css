@@ -1,0 +1,243 @@
+/* ============================================================
+   DASHBOARD
+============================================================ */
+
+.dashboard-page {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 24px;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   TOP BAR
+============================================================ */
+
+.topbar {
+  flex: 0 0 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #151e2a;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.mini-logo {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #263850;
+  border-radius: 9px;
+
+  background: #0d1520;
+}
+
+.mini-logo .shield-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.topbar-title {
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.topbar-file {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 2px;
+
+  color: #58667a;
+
+  font-size: 10px;
+}
+
+.topbar-file .small-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.reset-button {
+  padding: 8px 13px;
+
+  border: 1px solid #222f40;
+  border-radius: 7px;
+
+  color: #8190a5;
+
+  background: #0d131c;
+
+  font-size: 12px;
+}
+
+.reset-button:hover {
+  color: #d7e4f6;
+
+  border-color: #3b526f;
+
+  background: #121c29;
+}
+
+
+/* ============================================================
+   PACKET ANALYSIS
+============================================================ */
+
+.packet-analysis {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-rows:
+    minmax(300px, 1fr)
+    minmax(300px, 0.75fr);
+
+  gap: 12px;
+
+  padding: 12px 0 16px;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   PACKET LIST PANEL
+============================================================ */
+
+.packet-list-panel {
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+.packet-list-panel .data-card {
+  width: 100%;
+  height: 100%;
+
+  min-height: 0;
+
+  margin-top: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.packet-list-panel .data-card-header {
+  flex: 0 0 auto;
+}
+
+
+/* ============================================================
+   PACKET TABLE SCROLL
+============================================================ */
+
+.packet-list-panel .table-wrapper {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.packet-list-panel .table-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.packet-list-panel .table-wrapper::-webkit-scrollbar-track {
+  background: #101923;
+}
+
+.packet-list-panel .table-wrapper::-webkit-scrollbar-thumb {
+  background: #34475d;
+
+  border-radius: 6px;
+}
+
+.packet-list-panel .table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #465d76;
+}
+
+
+/* ============================================================
+   PACKET INFORMATION
+============================================================ */
+
+.packet-information-panel {
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+.packet-information-panel > * {
+  width: 100%;
+  height: 100%;
+
+  min-height: 0;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 800px) {
+  .dashboard-page {
+    padding: 0 14px;
+  }
+
+  .packet-analysis {
+    grid-template-rows:
+      minmax(280px, 1fr)
+      minmax(320px, 0.9fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    flex: 0 0 auto;
+
+    min-height: 64px;
+
+    padding: 12px 0;
+  }
+
+  .topbar-file {
+    max-width: 160px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .packet-analysis {
+    grid-template-rows:
+      minmax(300px, 1fr)
+      minmax(350px, 1fr);
+  }
+}

@@ -1,0 +1,1621 @@
+/* =========================================================
+   FLOW INSPECTOR
+   ========================================================= */
+
+.flow-inspector {
+  width: 100%;
+  min-height: calc(100vh - 68px);
+
+  padding: 0 24px 40px;
+
+  background: #080b10;
+  color: #dce4ee;
+
+  box-sizing: border-box;
+}
+
+.flow-inspector *,
+.flow-inspector *::before,
+.flow-inspector *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BACK
+   ========================================================= */
+
+.flow-inspector .fi-back {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 20px;
+  margin-bottom: 22px;
+
+  padding: 7px 11px;
+
+  border: 1px solid #26313e;
+  border-radius: 5px;
+
+  background: #0d131a;
+
+  color: #9aa9ba;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.flow-inspector .fi-back:hover {
+  border-color: #3a4858;
+  background: #141c25;
+  color: #e0e7ef;
+
+  transform: translateX(-2px);
+}
+
+.flow-inspector .fi-back:active {
+  transform: translateX(-3px);
+}
+
+.flow-inspector .fi-back-arrow {
+  color: #718398;
+
+  font-size: 14px;
+  line-height: 1;
+}
+
+.flow-inspector .fi-back:hover .fi-back-arrow {
+  color: #aebdcd;
+}
+
+
+/* =========================================================
+   FLOW IDENTITY
+   ========================================================= */
+
+.flow-inspector .fi-identity {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.flow-inspector .fi-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.flow-inspector .fi-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #526275;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.flow-inspector .fi-heading h2 {
+  margin: 0;
+
+  color: #e5ebf2;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
+}
+
+.flow-inspector .fi-id {
+  color: #465465;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   ENDPOINTS
+   ========================================================= */
+
+.flow-inspector .fi-endpoints {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    80px
+    minmax(0, 1fr);
+
+  width: 100%;
+  min-height: 96px;
+
+  border: 1px solid #1b2530;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(255, 255, 255, 0)
+    );
+
+  overflow: hidden;
+}
+
+.flow-inspector .fi-endpoint {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+
+  padding: 16px 20px;
+}
+
+.flow-inspector .fi-source {
+  border-left: 2px solid #4d8edb;
+}
+
+.flow-inspector .fi-destination {
+  align-items: flex-end;
+
+  border-right: 2px solid #42b883;
+
+  text-align: right;
+}
+
+.flow-inspector .fi-endpoint-label {
+  margin-bottom: 6px;
+
+  color: #526275;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.flow-inspector .fi-address {
+  display: flex;
+  align-items: baseline;
+
+  min-width: 0;
+
+  color: #e0e7ef;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.flow-inspector .fi-address span {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flow-inspector .fi-address small {
+  flex-shrink: 0;
+
+  margin-left: 2px;
+
+  color: #69798c;
+
+  font-size: 11px;
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   CENTER ARROW
+   ========================================================= */
+
+.flow-inspector .fi-arrow {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+}
+
+.flow-inspector .fi-arrow > span {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background: #202b37;
+}
+
+.flow-inspector .fi-arrow strong {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid #263340;
+  border-radius: 50%;
+
+  background: #080b10;
+
+  color: #718398;
+
+  font-size: 13px;
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.flow-inspector .fi-stats {
+  display: flex;
+  align-items: center;
+
+  gap: 0;
+
+  margin-top: 10px;
+}
+
+.flow-inspector .fi-stat {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border-right: 1px solid #202a35;
+}
+
+.flow-inspector .fi-stat:first-child {
+  padding-left: 1px;
+}
+
+.flow-inspector .fi-stat:last-child {
+  border-right: 0;
+}
+
+.flow-inspector .fi-stat-label {
+  color: #4f5e70;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+}
+
+.flow-inspector .fi-stat-value {
+  color: #9aa9ba;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+.flow-inspector .fi-protocol {
+  color: #8ea4bb;
+}
+
+
+/* =========================================================
+   SEPARATOR
+   ========================================================= */
+
+.flow-inspector .fi-separator {
+  width: 100%;
+  height: 1px;
+
+  margin-top: 4px;
+  margin-bottom: 24px;
+
+  background: #1a242f;
+}
+
+
+/* =========================================================
+   FOLLOW STREAM
+   ========================================================= */
+
+.flow-inspector .fi-stream-section {
+  width: 100%;
+}
+
+.flow-inspector .fi-stream-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.flow-inspector .fi-traffic-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #536477;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+.flow-inspector .fi-stream-title h2 {
+  margin: 0;
+
+  color: #dce4ee;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  letter-spacing: -0.01em;
+}
+
+.flow-inspector .fi-stream-title p {
+  margin: 4px 0 0;
+
+  color: #657487;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.flow-inspector .fi-stream-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   VIEW TOGGLE
+   ========================================================= */
+
+.flow-inspector .fi-toggle {
+  display: flex;
+  align-items: center;
+
+  padding: 2px;
+
+  border: 1px solid #26313e;
+  border-radius: 5px;
+
+  background: #0b1016;
+}
+
+.flow-inspector .fi-toggle button {
+  padding: 5px 10px;
+
+  border: 0;
+  border-radius: 3px;
+
+  background: transparent;
+
+  color: #68788c;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.flow-inspector .fi-toggle button:hover {
+  color: #b6c3d1;
+}
+
+.flow-inspector .fi-toggle button.active {
+  background: #1b2632;
+  color: #e0e7ef;
+}
+
+.flow-inspector .fi-packet-count {
+  color: #5e6e80;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   PACKET ANALYSIS LAYOUT
+   ========================================================= */
+
+.flow-inspector .fi-analysis-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(390px, 450px);
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   PACKET LIST
+   ========================================================= */
+
+.flow-inspector .fi-packet-list {
+  min-width: 0;
+
+  border: 1px solid #1d2733;
+  border-radius: 6px;
+
+  background: #090e14;
+
+  overflow: hidden;
+}
+
+.flow-inspector .fi-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 34px;
+
+  padding: 0 12px;
+
+  border-bottom: 1px solid #1d2733;
+
+  background: #0c1118;
+
+  color: #59697c;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+}
+
+.flow-inspector .fi-panel-header span:last-child {
+  color: #4f5f72;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 0;
+}
+
+.flow-inspector .fi-packet-stream {
+  width: 100%;
+}
+
+
+/* =========================================================
+   PACKET
+   ========================================================= */
+
+.flow-inspector .fi-packet {
+  width: 100%;
+
+  border-bottom: 1px solid #1d2733;
+
+  cursor: pointer;
+
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.flow-inspector .fi-packet:last-child {
+  border-bottom: 0;
+}
+
+.flow-inspector .fi-packet:hover {
+  background: #0d141c;
+}
+
+.flow-inspector .fi-packet.fi-selected {
+  background: #101923;
+}
+
+.flow-inspector .fi-packet-meta {
+  display: flex;
+  align-items: center;
+
+  min-height: 29px;
+
+  padding: 0 10px;
+
+  background: #0c1118;
+}
+
+.flow-inspector .fi-packet:hover .fi-packet-meta {
+  background: #101720;
+}
+
+.flow-inspector .fi-packet.fi-selected .fi-packet-meta {
+  background: #141e29;
+}
+
+.flow-inspector .fi-outgoing .fi-packet-meta {
+  border-left: 2px solid #4d8edb;
+}
+
+.flow-inspector .fi-incoming .fi-packet-meta {
+  border-left: 2px solid #42b883;
+}
+
+.flow-inspector .fi-packet-number {
+  width: 42px;
+
+  flex-shrink: 0;
+
+  color: #59697c;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+.flow-inspector .fi-direction {
+  display: flex;
+
+  gap: 7px;
+
+  min-width: 0;
+
+  color: #9aa9ba;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+.flow-inspector .fi-direction span {
+  color: #526276;
+}
+
+
+/* =========================================================
+   PACKET CONTENT
+   ========================================================= */
+
+.flow-inspector .fi-packet-content {
+  width: 100%;
+
+  padding: 10px 18px 12px 54px;
+
+  background: #090e14;
+}
+
+.flow-inspector .fi-packet-content pre {
+  width: 100%;
+
+  margin: 0;
+
+  color: #d3dce7;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  font-family:
+    "Cascadia Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.flow-inspector .fi-no-payload {
+  color: #59697c;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   PACKET INSPECTOR
+   ========================================================= */
+
+.flow-inspector .fi-packet-inspector {
+  position: sticky;
+  top: 18px;
+
+  align-self: start;
+
+  min-width: 0;
+  max-height: calc(100vh - 105px);
+
+  border: 1px solid #1d2733;
+  border-radius: 6px;
+
+  background: #090e14;
+
+  overflow: hidden auto;
+}
+
+
+/* =========================================================
+   INSPECTOR EMPTY
+   ========================================================= */
+
+.flow-inspector .fi-inspector-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  min-height: 280px;
+
+  padding: 28px 24px;
+}
+
+.flow-inspector .fi-inspector-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  margin-bottom: 16px;
+
+  border: 1px solid #263340;
+  border-radius: 5px;
+
+  color: #596a7d;
+
+  font-size: 14px;
+}
+
+.flow-inspector .fi-inspector-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #526275;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+.flow-inspector .fi-inspector-empty h3 {
+  margin: 0;
+
+  color: #cbd6e2;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.flow-inspector .fi-inspector-empty p {
+  max-width: 300px;
+
+  margin: 7px 0 0;
+
+  color: #657487;
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   INSPECTOR HEADER
+   ========================================================= */
+
+.flow-inspector .fi-inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px 16px 13px;
+
+  border-bottom: 1px solid #1d2733;
+
+  background: #0c1118;
+}
+
+.flow-inspector .fi-inspector-header h3 {
+  margin: 0;
+
+  color: #dce4ee;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.flow-inspector .fi-inspector-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 25px;
+  height: 25px;
+
+  border: 1px solid #293542;
+  border-radius: 4px;
+
+  background: transparent;
+
+  color: #718398;
+
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.flow-inspector .fi-inspector-close:hover {
+  border-color: #3a4858;
+
+  background: #17202a;
+
+  color: #dce4ee;
+}
+
+
+/* =========================================================
+   INSPECTOR DIRECTION
+   ========================================================= */
+
+.flow-inspector .fi-inspector-direction {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  border-bottom: 1px solid #1b2530;
+
+  color: #8e9eaf;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+}
+
+.flow-inspector .fi-inspector-direction span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flow-inspector .fi-inspector-direction strong {
+  flex-shrink: 0;
+
+  color: #526276;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   PROTOCOL STACK
+   ========================================================= */
+
+.flow-inspector .fi-protocol-stack {
+  width: 100%;
+}
+
+
+/* =========================================================
+   PROTOCOL LAYER
+   Matches PacketInspector.jsx
+   ========================================================= */
+
+.flow-inspector .fi-inspector-layer {
+  width: 100%;
+
+  border-bottom: 1px solid #1d2733;
+}
+
+.flow-inspector .fi-inspector-layer:last-child {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   PROTOCOL LAYER HEADER
+   ========================================================= */
+
+.flow-inspector .fi-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 42px;
+
+  padding: 7px 12px;
+
+  background: #0b1016;
+}
+
+.flow-inspector .fi-layer-type {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #526276;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.flow-inspector .fi-layer-header h4 {
+  margin: 0;
+
+  color: #cbd6e2;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   PROTOCOL FIELDS
+   ========================================================= */
+
+.flow-inspector .fi-layer-fields {
+  width: 100%;
+
+  padding: 9px 12px;
+
+  background: #090e14;
+}
+
+.flow-inspector .fi-field {
+  display: grid;
+
+  grid-template-columns:
+    minmax(110px, 1fr)
+    minmax(0, 1.5fr);
+
+  gap: 12px;
+
+  padding: 5px 0;
+
+  border-bottom: 1px solid #141d26;
+}
+
+.flow-inspector .fi-field:first-child {
+  padding-top: 0;
+}
+
+.flow-inspector .fi-field:last-child {
+  padding-bottom: 0;
+
+  border-bottom: 0;
+}
+
+.flow-inspector .fi-field span {
+  min-width: 0;
+
+  color: #59697c;
+
+  font-size: 9px;
+}
+
+.flow-inspector .fi-field strong {
+  min-width: 0;
+
+  overflow: hidden;
+
+  color: #aebbc9;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 9px;
+  font-weight: 400;
+
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   PAYLOAD BLOCK
+   Matches PacketInspector.jsx
+   ========================================================= */
+
+.flow-inspector .fi-payload-block {
+  width: 100%;
+
+  margin-bottom: 12px;
+}
+
+.flow-inspector .fi-payload-block:last-child {
+  margin-bottom: 0;
+}
+
+.flow-inspector .fi-payload-block > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #59697c;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.flow-inspector .fi-payload-block pre {
+  width: 100%;
+
+  max-height: 240px;
+
+  margin: 0;
+  padding: 9px;
+
+  border: 1px solid #1d2733;
+  border-radius: 4px;
+
+  background: #080d13;
+
+  color: #d3dce7;
+
+  overflow: auto;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  font-family:
+    "Cascadia Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   FULL STREAM
+   ========================================================= */
+
+.flow-inspector .fi-full-stream {
+  width: 100%;
+  min-height: 220px;
+
+  border: 1px solid #1d2733;
+  border-radius: 6px;
+
+  background: #090e14;
+
+  overflow: hidden;
+}
+
+.flow-inspector .fi-full-stream pre {
+  width: 100%;
+
+  margin: 0;
+  padding: 14px 18px;
+
+  color: #d3dce7;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  font-family:
+    "Cascadia Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.flow-inspector .fi-hex-stream {
+  color: #8ea4bb;
+
+  word-break: break-all;
+}
+
+
+/* =========================================================
+   EMPTY / NOT FOUND
+   ========================================================= */
+
+.flow-inspector .fi-empty {
+  width: 100%;
+
+  padding: 22px;
+
+  border: 1px solid #1d2733;
+  border-radius: 6px;
+
+  color: #657487;
+
+  font-size: 11px;
+}
+
+.flow-inspector .fi-not-found {
+  padding: 30px 0;
+}
+
+.flow-inspector .fi-not-found h2 {
+  margin: 0 0 6px;
+
+  color: #cbd6e2;
+
+  font-size: 16px;
+}
+
+.flow-inspector .fi-not-found p {
+  margin: 0;
+
+  color: #657487;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector {
+  background: #f4f5f7;
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-back {
+  border-color: #d1d6dd;
+  background: #ffffff;
+  color: #687280;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-back:hover {
+  border-color: #b9c1ca;
+  background: #f1f3f5;
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-back-arrow {
+  color: #7b8794;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-heading h2 {
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-eyebrow {
+  color: #7a8795;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-id {
+  color: #9aa3ad;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-endpoints {
+  border-color: #d4d9df;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-endpoint-label {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-address {
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-address small {
+  color: #7b8692;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-arrow > span {
+  background: #d9dee4;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-arrow strong {
+  border-color: #d4d9df;
+  background: #ffffff;
+  color: #718091;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-stat {
+  border-right-color: #d8dde2;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-stat-label {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-stat-value {
+  color: #596674;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-protocol {
+  color: #53697e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-separator {
+  background: #d4d9df;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-traffic-label {
+  color: #7a8795;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-stream-title h2 {
+  color: #374151;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-stream-title p {
+  color: #737d89;
+}
+
+
+/* =========================================================
+   LIGHT MODE — TOGGLE
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-toggle {
+  border-color: #d1d6dd;
+  background: #eef0f3;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-toggle button {
+  color: #737d89;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-toggle button.active {
+  background: #ffffff;
+  color: #20262d;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet-count {
+  color: #737d89;
+}
+
+
+/* =========================================================
+   LIGHT MODE — PACKET LIST
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-packet-list {
+  border-color: #d4d9df;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-panel-header {
+  border-bottom-color: #d4d9df;
+  background: #eef0f3;
+  color: #737d89;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-panel-header span:last-child {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet {
+  border-bottom-color: #dfe3e8;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet:hover {
+  background: #f7f8f9;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet.fi-selected {
+  background: #edf2f6;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet-meta {
+  background: #eef0f3;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet:hover .fi-packet-meta {
+  background: #e8ebee;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet.fi-selected .fi-packet-meta {
+  background: #e1e7ec;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet-number {
+  color: #8a929d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-direction {
+  color: #46515e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-direction span {
+  color: #8b96a3;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet-content {
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-packet-content pre {
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-no-payload {
+  color: #8a929d;
+}
+
+
+/* =========================================================
+   LIGHT MODE — PACKET INSPECTOR
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-packet-inspector {
+  border-color: #d4d9df;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-header {
+  border-bottom-color: #d4d9df;
+  background: #eef0f3;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-eyebrow {
+  color: #7a8795;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-header h3 {
+  color: #374151;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-close {
+  border-color: #d1d6dd;
+  color: #737d89;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-close:hover {
+  border-color: #b9c1ca;
+  background: #f1f3f5;
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-direction {
+  border-bottom-color: #dfe3e8;
+  color: #596674;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-direction strong {
+  color: #89939e;
+}
+
+
+/* =========================================================
+   LIGHT MODE — PROTOCOL LAYERS
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-layer {
+  border-bottom-color: #dfe3e8;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-layer-header {
+  background: #f4f5f7;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-layer-type {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-layer-header h4 {
+  color: #374151;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-layer-fields {
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-field {
+  border-bottom-color: #edf0f2;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-field span {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-field strong {
+  color: #46515e;
+}
+
+
+/* =========================================================
+   LIGHT MODE — PAYLOAD
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-payload-block > span {
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-payload-block pre {
+  border-color: #dfe3e8;
+  background: #fafbfc;
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-empty {
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-icon {
+  border-color: #d1d6dd;
+  color: #89939e;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-empty h3 {
+  color: #374151;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-inspector-empty p {
+  color: #737d89;
+}
+
+
+/* =========================================================
+   LIGHT MODE — FULL STREAM
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-full-stream {
+  border-color: #d4d9df;
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-full-stream pre {
+  color: #20262d;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-hex-stream {
+  color: #536273;
+}
+
+
+/* =========================================================
+   LIGHT MODE — EMPTY
+   ========================================================= */
+
+:root[data-theme="light"] .flow-inspector .fi-empty {
+  border-color: #d4d9df;
+  color: #737d89;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-not-found h2 {
+  color: #374151;
+}
+
+:root[data-theme="light"] .flow-inspector .fi-not-found p {
+  color: #737d89;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .flow-inspector .fi-analysis-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(340px, 400px);
+  }
+}
+
+@media (max-width: 850px) {
+  .flow-inspector {
+    padding: 0 18px 36px;
+  }
+
+  .flow-inspector .fi-analysis-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-inspector .fi-packet-inspector {
+    position: static;
+
+    max-height: none;
+
+    order: -1;
+  }
+
+  .flow-inspector .fi-inspector-empty {
+    min-height: 180px;
+  }
+
+  .flow-inspector .fi-endpoints {
+    grid-template-columns:
+      minmax(0, 1fr)
+      60px
+      minmax(0, 1fr);
+  }
+
+  .flow-inspector .fi-endpoint {
+    padding: 16px;
+  }
+
+  .flow-inspector .fi-address {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 650px) {
+  .flow-inspector {
+    padding: 0 14px 30px;
+  }
+
+  .flow-inspector .fi-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .flow-inspector .fi-endpoints {
+    grid-template-columns: 1fr;
+
+    min-height: 0;
+  }
+
+  .flow-inspector .fi-endpoint {
+    min-height: 72px;
+  }
+
+  .flow-inspector .fi-destination {
+    align-items: flex-start;
+
+    border-top: 1px solid #1b2530;
+    border-right: 0;
+
+    text-align: left;
+  }
+
+  .flow-inspector .fi-arrow {
+    display: none;
+  }
+
+  .flow-inspector .fi-stats {
+    flex-wrap: wrap;
+
+    gap: 8px 0;
+  }
+
+  .flow-inspector .fi-stat {
+    padding: 0 9px;
+  }
+
+  .flow-inspector .fi-stream-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+  .flow-inspector .fi-stream-controls {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 450px) {
+  .flow-inspector .fi-stream-controls {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .flow-inspector .fi-packet-count {
+    margin-left: 2px;
+  }
+
+  .flow-inspector .fi-stat {
+    border-right: 0;
+  }
+
+  .flow-inspector .fi-packet-content {
+    padding-left: 14px;
+  }
+
+  .flow-inspector .fi-field {
+    grid-template-columns: 1fr;
+
+    gap: 3px;
+  }
+
+  .flow-inspector .fi-field strong {
+    text-align: left;
+  }
+}
+
+@media (max-width: 650px) {
+  :root[data-theme="light"]
+  .flow-inspector .fi-destination {
+    border-top-color: #d4d9df;
+  }
+}

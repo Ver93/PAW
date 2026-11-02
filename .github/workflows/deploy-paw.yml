@@ -63,15 +63,6 @@ jobs:
             echo "=== Compiling PAW Ubuntu engine ==="
 
             gcc \
-              -Wall -Wextra -Wpedantic \
-              -Isrc \
-              -Isrc/parsing \
-              -Isrc/pcapng \
-              -Isrc/core \
-              -Isrc/utils \
-              -Isrc/validation \
-              -Isrc/export \
-              -Isrc/packets \
               src/main.c \
               src/parsing/pcapng_parser.c \
               src/parsing/packet_parser.c \
@@ -93,6 +84,18 @@ jobs:
               src/utils/debug.c \
               src/utils/utils.c \
               src/export/json_export.c \
+              src/analysis/flow.c \
+              src/analysis/flow_output.c \
+              -Wall -Wextra -Wpedantic \
+              -Isrc \
+              -Isrc/parsing \
+              -Isrc/pcapng \
+              -Isrc/core \
+              -Isrc/utils \
+              -Isrc/validation \
+              -Isrc/export \
+              -Isrc/analysis \
+              -Isrc/packets \
               -o "$OUTPUT" \
               -lpcap
 

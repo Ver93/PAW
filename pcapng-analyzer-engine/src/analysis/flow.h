@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "protocol_node.h"
 
 #include "packet_parser.h"
 

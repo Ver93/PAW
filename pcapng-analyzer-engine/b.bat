@@ -20,6 +20,8 @@ src/utils/endianness.c              ^
 src/utils/debug.c                   ^
 src/utils/utils.c                   ^
 src/export/json_export.c            ^
+src/analysis/flow.c                 ^
+src/analysis/flow_output.c          ^
 -Wall -Wextra -Wpedantic    ^
 -Isrc                       ^
 -Isrc/parsing               ^
@@ -28,5 +30,6 @@ src/export/json_export.c            ^
 -Isrc/utils                 ^
 -Isrc/validation            ^
 -Isrc/export                ^
+-Isrc/analysis              ^
 -Isrc/packets               ^
 -o bin/main.exe

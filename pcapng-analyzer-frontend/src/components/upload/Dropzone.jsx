@@ -28,9 +28,9 @@ export default function Dropzone({ onDataReady }) {
       const form = new FormData();
 
       form.append("file", file);
-
+        //"http://localhost:8000/upload",
       const response = await fetch(
-        "http://localhost:8000/upload",
+        "/api/paw/upload",
         {
           method: "POST",
           body: form,
